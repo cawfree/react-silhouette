@@ -10,7 +10,7 @@ class ItemToRemove extends React.Component {
         style={{
           width: 10,
           height: 10,
-          backgroundColor: this.props.color || 'blue',
+          backgroundColor: this.props.color || 'red',
         }}
       />
     );
@@ -61,7 +61,7 @@ function App() {
             style={{
               width: 10,
               height: 10,
-              backgroundColor: 'orange',
+              backgroundColor: 'green',
             }}
           />
           {(!!visible) && (
@@ -72,7 +72,7 @@ function App() {
             style={{
               width: 10,
               height: 10,
-              backgroundColor: 'orange',
+              backgroundColor: 'green',
             }}
           />
         </Silhouette>
