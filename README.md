@@ -20,7 +20,7 @@ Using [`yarn`]():
 yarn add react-silhouette
 ```
 
-##  Example
+## ✍️ Example
 
 ```javascript
 import React, { useEffect, useState } from 'react';
