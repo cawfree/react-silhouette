@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-//import { differenceWith, intersectionWith } from 'lodash';
-
-//const merge = () => {
-//
-//};
-
-//const diff = differenceWith(arrayOfChildren, lastChildren);
-
-// get diff children?
 
 const primary = children => children
   .map(child => child.key);
@@ -19,21 +10,7 @@ const childByKey = (children, key) => children
     null,
   );
 
-//const priority = (children, lastChildren, silhouette, child) => {
-//  console.log(child);
-//  console.log(children.indexOf(child));
-//  return 0;
-//};
-
-//Math.max(
-//    children.indexOf(child),
-//    Math.max(
-//      silhouette.indexOf(child),
-//      lastChildren.indexOf(child),
-//    ),
-//  );
-
-export default ({ children, ...extraProps }) => {
+const Silhouette = ({ children, Memory, ...extraProps }) => {
   const arrayOfChildren = React.Children.toArray(children);
   const [ lastChildren, setLastChildren ] = useState(arrayOfChildren);
   const [ silhouette, setSilhouette ] = useState([]);
@@ -61,7 +38,8 @@ export default ({ children, ...extraProps }) => {
         .filter(e => nextKeys.indexOf(e) < 0);
       setLastChildren(arrayOfChildren);
       const nextSilhouette = [
-        ...silhouette,
+        ...silhouette
+          .filter(child => nextKeys.indexOf(child.key) < 0),
         ...removed
           .map(key => childByKey(lastChildren, key)),
       ];
@@ -85,57 +63,57 @@ export default ({ children, ...extraProps }) => {
             ),
           ),
       );
+      setSilhouette(
+        nextSilhouette,
+      );
     },
     [children],
   );
   return (
     <>
-      {merged}
+      {merged.map(
+        child => (
+          <Memory
+            key={child.key}
+            children={child}
+            forget={!!childByKey(silhouette, child.key) && (() => {
+              setSilhouette(silhouette.filter(e => (e.key !== child.key)));
+              setMerged(merged.filter(e => (e.key !== child.key)));
+              setWeighting(
+                Object.entries(weighting)
+                  .reduce(
+                    (obj, [key, value]) => {
+                      if (key !== child.key) {
+                        return {
+                          ...obj,
+                          [key]: value,
+                        };
+                      }
+                      return obj;
+                    },
+                    {},
+                  ),
+              );
+            })}
+          />
+        ),
+      )}
     </>
   );
 };
 
-//// TODO: Need some way of managing the propagation of children.
-//
-//const primary = (children = []) => children
-//  .map(child => child.key)
-//  .filter(e => !!e)
-//  .filter((e, i, arr) => (arr.indexOf(e) === i));
-//
-//const pipe = (keys, children) => children
-//  .reduce(
-//    (obj, child) => {
-//      const key = child.key;
-//      // XXX: Assumes the dollar prefix implies the user has specified their own key. (Is this even important?)
-//      if (typeof key === 'string' && key.startsWith('.$')) {
-//        return {
-//          ...obj,
-//          // TODO: Some wrapper.
-//          [key]: child,
-//        };
-//      }
-//      return obj;
-//    },
-//    {},
-//  );
-//
-//const Silhouette = ({ children: input, ...extraProps }) => {
-//  const children = React.Children.toArray(input);
-//  const lastChildren = useState(
-//    children,
-//  );
-//
-//
-//  const keys = primary(children);
-//  const silhouette = useState(pipe(keys, children));
-//  return (
-//    <React.Fragment
-//    >
-//      {children.map(
-//        child => (silhouette[child.key] || child),
-//      )}
-//    </React.Fragment>
-//  );
-//};
-//
-//export default Silhouette;
+// TODO: Could define a function
+//       of valid keys, some method.
+Silhouette.propTypes = {
+  Memory: PropTypes.elementType,
+};
+
+Silhouette.defaultProps = {
+  Memory: ({ children, forget, ...extraProps }) => (
+    <>
+      {children}
+    </>
+  ),
+};
+
+export default Silhouette;
