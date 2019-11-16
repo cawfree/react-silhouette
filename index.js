@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,16 +7,13 @@ const primary = children => children
 
 const childByKey = (children, key) => children
   .reduce(
-    (child, e) => (child || (e.key === key) && e),
+    (child, e) => (child || ((e.key === key) && e)),
     null,
   );
 
-const Silhouette = ({ children, Memory, ...extraProps }) => {
+const Silhouette = ({ children, Frame, ...extraProps }) => {
   const arrayOfChildren = React.Children.toArray(children);
-  const [
-    state,
-    setState,
-  ] = useState(
+  const [ state, setState ] = useState(
     {
       lastChildren: arrayOfChildren,
       silhouette: [],
@@ -80,10 +78,10 @@ const Silhouette = ({ children, Memory, ...extraProps }) => {
     <>
       {merged.map(
         child => (
-          <Memory
+          <Frame
             key={child.key}
             children={child}
-            forget={!!childByKey(silhouette, child.key) && (() => {
+            unmount={!!childByKey(silhouette, child.key) && (() => {
               setState(
                 {
                   ...state,
@@ -113,12 +111,12 @@ const Silhouette = ({ children, Memory, ...extraProps }) => {
 };
 
 Silhouette.propTypes = {
-  Memory: PropTypes.elementType,
+  Frame: PropTypes.elementType,
 };
 
 Silhouette.defaultProps = {
-  Memory: ({ children, forget, ...extraProps }) => {
-    (typeof forget === 'function') && forget();
+  Frame: ({ children, unmount, ...extraProps }) => {
+    (typeof unmount === 'function') && unmount();
     return (
       <React.Fragment
         children={children}

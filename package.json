@@ -1,0 +1,10 @@
+{
+  "name": "react-silhouette",
+  "version": "0.0.1",
+  "description": "Deferred unmounting in React.js.",
+  "main": "index.js",
+  "repository": "https://github.com/cawfree/react-silhouette",
+  "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
+  "license": "MIT",
+  "private": false
+}
