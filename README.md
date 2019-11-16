@@ -1,4 +1,4 @@
-# `react-silhouette`
+# react-silhouette
 
 The `<Silhouette />` wrapper component for [React.js](https://reactjs.org/) is used to exert control over, and respond to, React's unmounting process. Each immediate child descendent of a `Silhouette` is explicitly **cached**, even when it has been removed from the React DOM, and will therefore _still remain visible on screen_.
 
@@ -6,7 +6,7 @@ This permits the caller to perform additional operations in response to the unmo
 
 Caching the component does _not_ cause React to remount the component again. When React attempts to unmount a component, a `<Silhouette />` merely shifts it's 'perspective' of the unmounted element. This way, the element doesn't actually go anywhere until you explicitly say so.
 
-## Getting Started
+## 🚀 Getting Started
 
 Using [`npm`]():
 
@@ -20,7 +20,7 @@ Using [`yarn`]():
 yarn add react-silhouette
 ```
 
-## Example
+##  Example
 
 ```javascript
 import React, { useEffect, useState } from 'react';
@@ -91,5 +91,5 @@ export default () => {
 };
 ```
 
-## License
+## ✌️  License
 [MIT](https://opensource.org/licenses/MIT)
