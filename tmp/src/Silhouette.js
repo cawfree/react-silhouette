@@ -102,18 +102,19 @@ const Silhouette = ({ children, Memory, ...extraProps }) => {
   );
 };
 
-// TODO: Could define a function
-//       of valid keys, some method.
 Silhouette.propTypes = {
   Memory: PropTypes.elementType,
 };
 
 Silhouette.defaultProps = {
-  Memory: ({ children, forget, ...extraProps }) => (
-    <>
-      {children}
-    </>
-  ),
+  Memory: ({ children, forget, ...extraProps }) => {
+    (typeof forget === 'function') && forget();
+    return (
+      <React.Fragment
+        children={children}
+      />
+    );
+  },
 };
 
 export default Silhouette;
