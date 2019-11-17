@@ -45,27 +45,28 @@ const Silhouette = ({ children, Frame, ...extraProps }) => {
         ...removed
           .map(key => childByKey(lastChildren, key)),
       ];
+      const nextWeighting = added
+        .reduce(
+          (obj, child) => (
+            {
+              ...obj,
+              [child.key]: arrayOfChildren.indexOf(child)
+            }
+          ),
+          weighting,
+        );
       setState(
         {
           ...state,
           lastChildren: arrayOfChildren,
-          nextWeighting: added
-            .reduce(
-              (obj, child) => (
-                {
-                  ...obj,
-                  [child.key]: arrayOfChildren.indexOf(child)
-                }
-              ),
-              weighting,
-            ),
+          weighting: nextWeighting,
           merged: [
             ...arrayOfChildren,
             ...nextSilhouette,
           ]
             .sort(
               (e0, e1) => (
-                weighting[e0.key]- weighting[e1.key]
+                nextWeighting[e0.key]- nextWeighting[e1.key]
               ),
             ),
           silhouette: nextSilhouette,
